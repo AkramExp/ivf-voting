@@ -39,12 +39,12 @@ const PollCard = ({ poll }) => {
         {/* Poll Header */}
         <div className="mb-6">
           <div className="flex items-center space-x-2 mb-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-gray-800 to-black rounded-lg flex items-center justify-center border border-gray-700/50">
+            <div className="w-8 h-8 bg-gradient-to-br from-gray-800 to-black rounded-lg flex items-center justify-center border border-gray-700/50 text-white">
               <svg className="w-4 h-4 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
               </svg>
             </div>
-            <div className="text-sm text-gray-500 font-medium">COMMUNITY POLL</div>
+            <div className="text-sm text-gray-500 font-medium">IVF POLL</div>
           </div>
 
           <h3 className="text-xl font-bold text-white mb-3 line-clamp-2 group-hover:text-primary-300 transition-colors">
@@ -72,8 +72,6 @@ const PollCard = ({ poll }) => {
 
         {/* Top Options Visualization */}
         <div className="space-y-4 mb-6">
-          <div className="text-sm font-semibold text-gray-300">Top Results</div>
-
           {topOptions.map((option, index) => {
             const percentage = totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0;
             const barWidth = totalVotes > 0 ? (option.votes / maxVotes) * 100 : 0;
@@ -90,7 +88,7 @@ const PollCard = ({ poll }) => {
                   <div className="text-sm font-semibold text-white">{percentage.toFixed(0)}%</div>
                 </div>
 
-                <div className="h-2 bg-gray-800/50 rounded-full overflow-hidden">
+                <div className="h-2 bg-gray-800/50 rounded-full overflow-hidden mt-2">
                   <div
                     className={`h-full rounded-full bg-gradient-to-r ${colors[index % colors.length]} transition-all duration-1000`}
                     style={{ width: `${barWidth}%` }}
@@ -127,7 +125,7 @@ const PollCard = ({ poll }) => {
               </span>
             </div>
 
-            <div className="flex items-center space-x-2 group/view">
+            <div className="flex items-center space-x-2 group/view text-white">
               <span className="text-primary-400 font-medium group-hover/view:text-primary-300 transition-colors">
                 View Details
               </span>

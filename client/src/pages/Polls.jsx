@@ -122,7 +122,7 @@ const Polls = () => {
           </div>
 
           {/* Stats Bar */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          {/* <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <div className="backdrop-blur-xl bg-gray-900/40 rounded-xl border border-gray-800/50 p-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -184,7 +184,7 @@ const Polls = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Filters and Search */}
           <div className="backdrop-blur-xl bg-gray-900/40 rounded-2xl border border-gray-800/50 p-6 mb-8">
@@ -211,8 +211,8 @@ const Polls = () => {
                   <button
                     onClick={() => setFilter('all')}
                     className={`px-4 py-2 rounded-lg transition-all ${filter === 'all'
-                        ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
-                        : 'bg-gray-800/50 text-gray-400 hover:text-white hover:bg-gray-800'
+                      ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
+                      : 'bg-gray-800/50 text-gray-400 hover:text-white hover:bg-gray-800'
                       }`}
                   >
                     All
@@ -220,8 +220,8 @@ const Polls = () => {
                   <button
                     onClick={() => setFilter('voted')}
                     className={`px-4 py-2 rounded-lg transition-all ${filter === 'voted'
-                        ? 'bg-green-500 text-white shadow-lg shadow-green-500/30'
-                        : 'bg-gray-800/50 text-gray-400 hover:text-white hover:bg-gray-800'
+                      ? 'bg-green-500 text-white shadow-lg shadow-green-500/30'
+                      : 'bg-gray-800/50 text-gray-400 hover:text-white hover:bg-gray-800'
                       }`}
                   >
                     Voted
@@ -229,8 +229,8 @@ const Polls = () => {
                   <button
                     onClick={() => setFilter('not-voted')}
                     className={`px-4 py-2 rounded-lg transition-all ${filter === 'not-voted'
-                        ? 'bg-yellow-500 text-white shadow-lg shadow-yellow-500/30'
-                        : 'bg-gray-800/50 text-gray-400 hover:text-white hover:bg-gray-800'
+                      ? 'bg-yellow-500 text-white shadow-lg shadow-yellow-500/30'
+                      : 'bg-gray-800/50 text-gray-400 hover:text-white hover:bg-gray-800'
                       }`}
                   >
                     Pending

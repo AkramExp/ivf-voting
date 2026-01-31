@@ -118,8 +118,8 @@ const PollDetail = () => {
 
           <div className="flex items-center space-x-3">
             <span className={`px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-sm border ${poll.isActive
-                ? 'bg-green-500/10 text-green-400 border-green-500/30'
-                : 'bg-red-500/10 text-red-400 border-red-500/30'
+              ? 'bg-green-500/10 text-green-400 border-green-500/30'
+              : 'bg-red-500/10 text-red-400 border-red-500/30'
               }`}>
               {poll.isActive ? 'Live' : 'Closed'}
             </span>
@@ -137,7 +137,7 @@ const PollDetail = () => {
               <div className="flex-1">
                 <div className="inline-flex items-center space-x-2 mb-4">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-sm text-gray-500 font-medium">COMMUNITY POLL</span>
+                  <span className="text-sm text-gray-500 font-medium">IVF POLL</span>
                 </div>
                 <h1 className="text-3xl font-bold text-white mb-3 leading-tight tracking-tight">{poll.title}</h1>
                 {poll.description && (
@@ -149,7 +149,7 @@ const PollDetail = () => {
             {/* Poll Stats */}
             <div className="flex flex-wrap items-center gap-4 pt-6 border-t border-gray-800/50">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-gray-800 to-black rounded-lg flex items-center justify-center border border-gray-700/50">
+                <div className="w-10 h-10 bg-gradient-to-br from-gray-800 to-black rounded-lg flex items-center justify-center border border-gray-700/50 text-white">
                   <svg className="w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
@@ -163,7 +163,7 @@ const PollDetail = () => {
               <div className="h-8 w-px bg-gray-800/50"></div>
 
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-gray-800 to-black rounded-lg flex items-center justify-center border border-gray-700/50">
+                <div className="w-10 h-10 bg-gradient-to-br from-gray-800 to-black rounded-lg flex items-center justify-center border border-gray-700/50 text-white">
                   <svg className="w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                   </svg>
@@ -182,7 +182,7 @@ const PollDetail = () => {
               <div className="h-8 w-px bg-gray-800/50"></div>
 
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-gray-800 to-black rounded-lg flex items-center justify-center border border-gray-700/50">
+                <div className="w-10 h-10 bg-gradient-to-br from-gray-800 to-black rounded-lg flex items-center justify-center border border-gray-700/50 text-white">
                   <svg className="w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
@@ -263,8 +263,8 @@ const PollDetail = () => {
                     onMouseLeave={() => setHoveredOption(null)}
                     onClick={() => canVote && poll.isActive && setSelectedOption(option.id)}
                     className={`relative overflow-hidden rounded-xl border transition-all duration-300 ${canVote && poll.isActive
-                        ? 'cursor-pointer hover:scale-[1.02] hover:shadow-2xl'
-                        : 'cursor-default'
+                      ? 'cursor-pointer hover:scale-[1.02] hover:shadow-2xl'
+                      : 'cursor-default'
                       } ${isSelected
                         ? `border-primary-500/50 bg-gradient-to-r ${colorClass}/5`
                         : 'border-gray-800/50 bg-gray-900/30'
@@ -285,8 +285,8 @@ const PollDetail = () => {
                           {/* Selection indicator */}
                           <div className="relative">
                             <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${isSelected
-                                ? `border-primary-500 bg-gradient-to-r ${colorClass} shadow-lg shadow-primary-500/30`
-                                : 'border-gray-600 bg-gray-800/50'
+                              ? `border-primary-500 bg-gradient-to-r ${colorClass} shadow-lg shadow-primary-500/30`
+                              : 'border-gray-600 bg-gray-800/50'
                               }`}>
                               {isSelected && (
                                 <svg className="w-3 h-3 text-white animate-scale-in" fill="currentColor" viewBox="0 0 20 20">
