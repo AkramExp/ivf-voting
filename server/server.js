@@ -24,6 +24,11 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
+app.get("/health-check", (req, res) => {
+  console.log("api is running");
+  res.status(200).json({ message: "api is running" });
+})
+
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
@@ -40,7 +45,7 @@ app.get('/api/auth/discord', (req, res) => {
     response_type: 'code',
     scope: 'identify guilds'
   });
-  
+
   res.json({
     url: `https://discord.com/api/oauth2/authorize?${params.toString()}`
   });
@@ -94,7 +99,7 @@ app.post('/api/auth/callback', async (req, res) => {
 
     // Create or update user
     let user = await User.findOne({ discordId: discordUser.id });
-    
+
     if (user) {
       user.username = discordUser.username;
       user.discriminator = discordUser.discriminator;
@@ -175,7 +180,7 @@ app.get('/api/polls/:id', authenticateToken, async (req, res) => {
   try {
     const poll = await Poll.findById(req.params.id)
       .populate('createdBy', 'username');
-    
+
     if (!poll) {
       return res.status(404).json({ error: 'Poll not found' });
     }
@@ -237,15 +242,15 @@ app.put('/api/polls/:id', authenticateToken, requireAdmin, async (req, res) => {
 
     if (title) poll.title = title;
     if (description !== undefined) poll.description = description;
-    
+
     if (options) {
       // Get existing votes
       const votes = await Vote.find({ pollId: poll._id });
-      
+
       // Map old option IDs to new ones where text matches
       const optionMap = {};
       poll.options.forEach(oldOpt => {
-        const newOpt = options.find(newOptText => 
+        const newOpt = options.find(newOptText =>
           newOptText.toLowerCase() === oldOpt.text.toLowerCase()
         );
         if (newOpt) {
@@ -302,7 +307,7 @@ app.delete('/api/polls/:id', authenticateToken, requireAdmin, async (req, res) =
 
     // Delete all votes for this poll
     await Vote.deleteMany({ pollId: poll._id });
-    
+
     // Delete the poll
     await Poll.findByIdAndDelete(req.params.id);
 
