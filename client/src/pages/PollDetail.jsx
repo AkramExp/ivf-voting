@@ -503,7 +503,7 @@ const PollDetail = () => {
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-gradient-to-br from-gray-900 to-black rounded-2xl border border-gray-800/50 shadow-2xl shadow-black/50 max-w-2xl w-full max-h-[80vh] flex flex-col">
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-800/50">
+            <div className="flex items-center justify-between p-6 border-b border-gray-800/50 text-white">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 bg-primary-500/20 rounded-lg flex items-center justify-center">
                   <svg className="w-6 h-6 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
@@ -512,9 +512,9 @@ const PollDetail = () => {
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-white">Voters</h3>
-                  <p className="text-sm text-gray-400">
+                  {/* <p className="text-sm text-gray-400">
                     {selectedOptionForModal && `${selectedOptionForModal.text}`}
-                  </p>
+                  </p> */}
                 </div>
               </div>
               <button
