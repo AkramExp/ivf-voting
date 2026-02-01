@@ -36,6 +36,7 @@ export const reopenPoll = (id) => api.post(`/polls/${id}/reopen`);
 
 // Votes
 export const submitVote = (pollId, optionId) => api.post(`/votes/${pollId}`, { optionId });
+export const getVoters = (pollId, optionId) => api.get(`/polls/${pollId}/options/${optionId}/voters`);
 
 // Results
 export const getResults = () => api.get('/results');

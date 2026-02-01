@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { getPoll, submitVote } from '../utils/api';
+import { getPoll, submitVote, getVoters } from '../utils/api';
 
 const PollDetail = () => {
   const { id } = useParams();
@@ -14,6 +14,10 @@ const PollDetail = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [hoveredOption, setHoveredOption] = useState(null);
+  const [votersModalOpen, setVotersModalOpen] = useState(false);
+  const [selectedOptionForModal, setSelectedOptionForModal] = useState(null);
+  const [modalVoters, setModalVoters] = useState([]);
+  const [modalLoading, setModalLoading] = useState(false);
 
   useEffect(() => {
     loadPoll();
@@ -49,6 +53,24 @@ const PollDetail = () => {
       setError(error.response?.data?.error || 'Failed to submit vote');
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const toggleVoters = async (optionId) => {
+    const option = poll.options.find(opt => opt.id === optionId);
+    setSelectedOptionForModal(option);
+    setVotersModalOpen(true);
+
+    try {
+      setModalLoading(true);
+      console.log("hello")
+      const response = await getVoters(id, optionId);
+      setModalVoters(response.data.voters);
+    } catch (error) {
+      console.error('Failed to load voters:', error);
+      setError(error.response?.data?.error || 'Failed to load voters');
+    } finally {
+      setModalLoading(false);
     }
   };
 
@@ -258,78 +280,93 @@ const PollDetail = () => {
                   const colorClass = colors[index % colors.length];
 
                   return (
-                    <div
-                      key={option.id}
-                      onMouseEnter={() => setHoveredOption(option.id)}
-                      onMouseLeave={() => setHoveredOption(null)}
-                      onClick={() => canVote && poll.isActive && setSelectedOption(option.id)}
-                      className={`relative overflow-hidden rounded-xl border transition-all duration-300 ${canVote && poll.isActive
-                        ? 'cursor-pointer hover:scale-[1.02] hover:shadow-2xl'
-                        : 'cursor-default'
-                        } ${isSelected
-                          ? `border-primary-500/50 bg-gradient-to-r ${colorClass}/5`
-                          : 'border-gray-800/50 bg-gray-900/30'
-                        }`}
-                    >
-                      {/* Background bar */}
+                    <div key={option.id}>
                       <div
-                        className="absolute inset-0 transition-all duration-700 ease-out"
-                        style={{ width: `${barWidth}%` }}
+                        onMouseEnter={() => setHoveredOption(option.id)}
+                        onMouseLeave={() => setHoveredOption(null)}
+                        onClick={() => canVote && poll.isActive && setSelectedOption(option.id)}
+                        className={`relative overflow-hidden rounded-xl border transition-all duration-300 ${canVote && poll.isActive
+                          ? 'cursor-pointer hover:scale-[1.02] hover:shadow-2xl'
+                          : 'cursor-default'
+                          } ${isSelected
+                            ? `border-primary-500/50 bg-gradient-to-r ${colorClass}/5`
+                            : 'border-gray-800/50 bg-gray-900/30'
+                          }`}
                       >
-                        <div className={`absolute inset-0 bg-gradient-to-r ${colorClass}/10`}></div>
-                      </div>
-
-                      {/* Option content */}
-                      <div className="relative p-6">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-4 flex-1">
-                            {/* Selection indicator */}
-                            <div className="relative">
-                              <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${isSelected
-                                ? `border-primary-500 bg-gradient-to-r ${colorClass} shadow-lg shadow-primary-500/30`
-                                : 'border-gray-600 bg-gray-800/50'
-                                }`}>
-                                {isSelected && (
-                                  <svg className="w-3 h-3 text-white animate-scale-in" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                  </svg>
-                                )}
-                              </div>
-                              {canVote && poll.isActive && (
-                                <div className={`absolute -inset-3 rounded-full transition-opacity duration-300 ${hoveredOption === option.id ? 'opacity-100' : 'opacity-0'
-                                  }`}>
-                                  <div className="absolute inset-0 bg-primary-500/20 blur-md"></div>
-                                </div>
-                              )}
-                            </div>
-
-                            {/* Option text */}
-                            <div className="flex-1">
-                              <span className="text-white text-lg font-medium">{option.text}</span>
-                              {hasVoted && (
-                                <div className="inline-flex items-center ml-3 px-2 py-1 bg-primary-500/20 rounded-md">
-                                  <svg className="w-3 h-3 text-primary-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                  </svg>
-                                  <span className="text-xs font-semibold text-primary-400">Your Vote</span>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-
-                          {/* Vote count and percentage */}
-                          <div className="text-right">
-                            <div className="text-2xl font-bold text-white mb-1">{option.votes}</div>
-                            <div className="text-sm font-semibold text-gray-400">{percentage.toFixed(1)}%</div>
-                          </div>
+                        {/* Background bar */}
+                        <div
+                          className="absolute inset-0 transition-all duration-700 ease-out"
+                          style={{ width: `${barWidth}%` }}
+                        >
+                          <div className={`absolute inset-0 bg-gradient-to-r ${colorClass}/10`}></div>
                         </div>
 
-                        {/* Percentage bar */}
-                        <div className="mt-4 h-2 bg-gray-800/50 rounded-full overflow-hidden">
-                          <div
-                            className={`h-full rounded-full bg-gradient-to-r ${colorClass} transition-all duration-1000 ease-out`}
-                            style={{ width: `${percentage}%` }}
-                          ></div>
+                        {/* Option content */}
+                        <div className="relative p-6">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-4 flex-1">
+                              {/* Selection indicator */}
+                              <div className="relative">
+                                <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${isSelected
+                                  ? `border-primary-500 bg-gradient-to-r ${colorClass} shadow-lg shadow-primary-500/30`
+                                  : 'border-gray-600 bg-gray-800/50'
+                                  }`}>
+                                  {isSelected && (
+                                    <svg className="w-3 h-3 text-white animate-scale-in" fill="currentColor" viewBox="0 0 20 20">
+                                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                    </svg>
+                                  )}
+                                </div>
+                                {canVote && poll.isActive && (
+                                  <div className={`absolute -inset-3 rounded-full transition-opacity duration-300 ${hoveredOption === option.id ? 'opacity-100' : 'opacity-0'
+                                    }`}>
+                                    <div className="absolute inset-0 bg-primary-500/20 blur-md"></div>
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Option text */}
+                              <div className="flex-1">
+                                <span className="text-white text-lg font-medium">{option.text}</span>
+                                {hasVoted && (
+                                  <div className="inline-flex items-center ml-3 px-2 py-1 bg-primary-500/20 rounded-md">
+                                    <svg className="w-3 h-3 text-primary-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                    </svg>
+                                    <span className="text-xs font-semibold text-primary-400">Your Vote</span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Vote count and percentage */}
+                            <div className="text-right">
+                              <div className="text-2xl font-bold text-white mb-1">{option.votes}</div>
+                              <div className="text-sm font-semibold text-gray-400">{percentage.toFixed(1)}%</div>
+                            </div>
+                          </div>
+
+                          {/* Percentage bar */}
+                          <div className="mt-4 h-2 bg-gray-800/50 rounded-full overflow-hidden">
+                            <div
+                              className={`h-full rounded-full bg-gradient-to-r ${colorClass} transition-all duration-1000 ease-out`}
+                              style={{ width: `${percentage}%` }}
+                            ></div>
+                          </div>
+
+                          {/* View Voters Button */}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleVoters(option.id);
+                            }}
+                            className="mt-4 w-full flex items-center justify-center space-x-2 px-4 py-2 bg-gray-800/50 hover:bg-gray-700/50 border border-gray-700/50 hover:border-gray-600 rounded-lg transition-all duration-200 text-gray-300 hover:text-white text-sm font-medium"
+                          >
+                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v4h8v-4zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+                            </svg>
+                            <span>View Voters ({option.votes})</span>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -460,6 +497,106 @@ const PollDetail = () => {
           </div>
         )}
       </div>
+
+      {/* Voters Modal */}
+      {votersModalOpen && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-gradient-to-br from-gray-900 to-black rounded-2xl border border-gray-800/50 shadow-2xl shadow-black/50 max-w-2xl w-full max-h-[80vh] flex flex-col">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-800/50">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-primary-500/20 rounded-lg flex items-center justify-center">
+                  <svg className="w-6 h-6 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v4h8v-4zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-white">Voters</h3>
+                  <p className="text-sm text-gray-400">
+                    {selectedOptionForModal && `${selectedOptionForModal.text}`}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setVotersModalOpen(false);
+                  setModalVoters([]);
+                  setSelectedOptionForModal(null);
+                }}
+                className="p-2 hover:bg-gray-800/50 rounded-lg transition-colors"
+              >
+                <svg className="w-6 h-6 text-gray-400 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="flex-1 overflow-y-auto p-6">
+              {modalLoading ? (
+                <div className="flex flex-col items-center justify-center py-12">
+                  <svg className="animate-spin h-8 w-8 text-primary-400 mb-4" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <p className="text-gray-400 font-medium">Loading voters...</p>
+                </div>
+              ) : modalVoters.length > 0 ? (
+                <div className="space-y-3">
+                  {modalVoters.map((voter, idx) => (
+                    <div key={idx} className="flex items-center space-x-4 p-4 bg-gray-800/30 rounded-lg border border-gray-700/30 hover:border-gray-600/50 hover:bg-gray-800/50 transition-all duration-200">
+                      {voter.avatar && (
+                        <img
+                          src={`https://cdn.discordapp.com/avatars/${voter.discordId}/${voter.avatar}.png`}
+                          alt={voter.username}
+                          className="w-12 h-12 rounded-full object-cover flex-shrink-0"
+                          onError={(e) => {
+                            e.target.src = 'https://via.placeholder.com/48?text=User';
+                          }}
+                        />
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-white font-semibold text-sm truncate">{voter.username}</p>
+                        <p className="text-gray-500 text-xs">
+                          Voted on {new Date(voter.votedAt).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric'
+                          })} at {new Date(voter.votedAt).toLocaleTimeString('en-US', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-12">
+                  <svg className="w-16 h-16 text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                  <p className="text-gray-400 font-medium">No voters yet</p>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="flex justify-end gap-3 p-6 border-t border-gray-800/50">
+              <button
+                onClick={() => {
+                  setVotersModalOpen(false);
+                  setModalVoters([]);
+                  setSelectedOptionForModal(null);
+                }}
+                className="px-6 py-2 bg-gray-800/50 hover:bg-gray-700/50 border border-gray-700/50 text-gray-300 hover:text-white rounded-lg transition-all duration-200 font-medium"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

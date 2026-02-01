@@ -418,6 +418,47 @@ app.post('/api/votes/:pollId', authenticateToken, requireServerMember, async (re
   }
 });
 
+// Get voters for a specific option
+app.get('/api/polls/:pollId/options/:optionId/voters', authenticateToken, async (req, res) => {
+  console.log('helllooo')
+  try {
+    const { pollId, optionId } = req.params;
+
+    const poll = await Poll.findById(pollId);
+    if (!poll) {
+      return res.status(404).json({ error: 'Poll not found' });
+    }
+
+    // Verify that the option exists in this poll
+    const option = poll.options.find(opt => opt.id === optionId);
+    if (!option) {
+      return res.status(404).json({ error: 'Option not found' });
+    }
+
+    // Get all votes for this option with user details
+    const votes = await Vote.find({
+      pollId: poll._id,
+      optionId: optionId
+    }).populate('userId', 'username avatar discordId');
+
+    const voters = votes.map(vote => ({
+      username: vote.userId.username,
+      avatar: vote.userId.avatar,
+      discordId: vote.userId.discordId,
+      votedAt: vote.createdAt
+    }));
+
+    res.json({
+      option: option.text,
+      voterCount: voters.length,
+      voters
+    });
+  } catch (error) {
+    console.error('Fetch voters error:', error);
+    res.status(500).json({ error: 'Failed to fetch voters' });
+  }
+});
+
 // Results Routes
 app.get('/api/results', authenticateToken, async (req, res) => {
   try {
