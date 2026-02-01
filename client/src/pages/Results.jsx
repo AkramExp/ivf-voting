@@ -79,8 +79,8 @@ const Results = () => {
         <div className="mb-8 animate-fade-in">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-4xl font-bold text-white mb-2 tracking-tight">Poll Results</h1>
-              <p className="text-gray-400 text-lg">
+              <h1 className="text-2xl font-bold text-white mb-2 tracking-tight">Poll Results</h1>
+              <p className="text-gray-400 text-base">
                 Insights and outcomes from closed community polls
               </p>
             </div>
@@ -92,7 +92,7 @@ const Results = () => {
           </div>
 
           {/* Stats Summary */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          {/* <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <div className="backdrop-blur-xl bg-gray-900/40 rounded-xl border border-gray-800/50 p-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -159,7 +159,7 @@ const Results = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Controls */}
           <div className="backdrop-blur-xl bg-gray-900/40 rounded-2xl border border-gray-800/50 p-6 mb-8">
@@ -199,7 +199,7 @@ const Results = () => {
                   onClick={loadResults}
                   className="px-4 py-2 bg-gradient-to-r from-gray-800 to-black border border-gray-700 rounded-lg text-white hover:border-gray-600 transition-all flex items-center space-x-2"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                   </svg>
                   <span>Refresh</span>
@@ -265,7 +265,7 @@ const Results = () => {
               </div>
             </div>
 
-            <div className="space-y-8">
+            <div className="space-y-8 grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3">
               {sortedResults.map((poll, index) => {
                 const totalVotes = poll.options.reduce((sum, opt) => sum + opt.votes, 0);
                 const sortedOptions = [...poll.options].sort((a, b) => b.votes - a.votes);
@@ -281,151 +281,149 @@ const Results = () => {
                 return (
                   <div
                     key={poll._id}
-                    className="backdrop-blur-xl bg-gray-900/40 rounded-2xl border border-gray-800/50 overflow-hidden animate-slide-up shadow-xl shadow-black/20 hover:shadow-gray-900/10 transition-all duration-300"
+                    className="backdrop-blur-xl bg-gray-900/40 rounded-xl border border-gray-800/50 overflow-hidden animate-slide-up shadow-lg shadow-black/20 hover:shadow-gray-900/10 transition-all duration-300 text-white"
                     style={{ animationDelay: `${index * 0.05}s` }}
                   >
                     {/* Poll Header */}
-                    <div className="p-8 border-b border-gray-800/50">
-                      <div className="flex items-start justify-between mb-6">
+                    <div className="p-6 border-b border-gray-800/50">
+                      <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
-                          <div className="flex items-center space-x-3 mb-3">
-                            <span className="px-3 py-1 bg-red-500/10 text-red-400 text-xs font-semibold rounded-full border border-red-500/30">
+                          <div className="flex items-center space-x-2 mb-2">
+                            <span className="px-2.5 py-0.5 bg-red-500/10 text-red-400 text-xs font-semibold rounded-full border border-red-500/30">
                               Closed
                             </span>
-                            <span className="px-3 py-1 bg-gray-800/50 text-gray-400 text-xs font-semibold rounded-full border border-gray-700/50">
+                            <span className="px-2.5 py-0.5 bg-gray-800/50 text-gray-400 text-xs font-semibold rounded-full border border-gray-700/50">
                               {new Date(poll.closedAt).toLocaleDateString('en-US', {
                                 month: 'short',
                                 day: 'numeric',
-                                year: 'numeric'
+                                year: 'numeric',
                               })}
                             </span>
                           </div>
-                          <h3 className="text-2xl font-bold text-white mb-3">{poll.title}</h3>
+
+                          <h3 className="text-xl font-bold text-white mb-2">
+                            {poll.title}
+                          </h3>
+
                           {poll.description && (
-                            <p className="text-gray-400 text-lg leading-relaxed">{poll.description}</p>
+                            <p className="text-gray-400 text-base leading-relaxed">
+                              {poll.description}
+                            </p>
                           )}
                         </div>
                       </div>
 
-                      {/* Poll Metadata */}
+                      {/* Metadata */}
                       <div className="flex flex-wrap items-center gap-4">
                         <div className="flex items-center space-x-3">
-                          <div className="w-8 h-8 bg-gradient-to-br from-gray-800 to-black rounded-lg flex items-center justify-center border border-gray-700/50">
-                            <svg className="w-4 h-4 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <div className="w-7 h-7 bg-gradient-to-br from-gray-800 to-black rounded-lg flex items-center justify-center border border-gray-700/50">
+                            <svg className="w-3.5 h-3.5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                           </div>
                           <div>
                             <p className="text-xs text-gray-500">Created by</p>
-                            <p className="text-white font-medium">{poll.createdBy.username}</p>
+                            <p className="text-sm text-white font-medium">
+                              {poll.createdBy.username}
+                            </p>
                           </div>
                         </div>
 
-                        <div className="h-8 w-px bg-gray-800/50"></div>
+                        <div className="h-6 w-px bg-gray-800/50" />
 
                         <div className="flex items-center space-x-3">
-                          <div className="w-8 h-8 bg-gradient-to-br from-gray-800 to-black rounded-lg flex items-center justify-center border border-gray-700/50">
-                            <svg className="w-4 h-4 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                          <div className="w-7 h-7 bg-gradient-to-br from-gray-800 to-black rounded-lg flex items-center justify-center border border-gray-700/50">
+                            <svg className="w-3.5 h-3.5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" />
                             </svg>
                           </div>
                           <div>
                             <p className="text-xs text-gray-500">Total Votes</p>
-                            <p className="text-white font-medium text-xl">{totalVotes}</p>
+                            <p className="text-lg text-white font-semibold">
+                              {totalVotes}
+                            </p>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* Winner Highlight */}
+                    {/* Winner */}
                     {winner && totalVotes > 0 && (
-                      <div className={`bg-gradient-to-r ${colorClass}/10 border-t-0 border-x-0 border-b border-gray-800/50 p-6`}>
+                      <div className={`bg-gradient-to-r ${colorClass}/10 border-b border-gray-800/50 p-5`}>
                         <div className="flex items-center space-x-4">
-                          <div className={`w-14 h-14 bg-gradient-to-r ${colorClass} rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/20`}>
-                            <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                          <div className={`w-12 h-12 bg-gradient-to-r ${colorClass} rounded-xl flex items-center justify-center`}>
+                            <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
                               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                             </svg>
                           </div>
+
                           <div className="flex-1">
-                            <div className="text-sm font-semibold text-gray-400 mb-1">DECIDED WINNER</div>
-                            <div className="text-2xl font-bold text-white mb-2">{winner.text}</div>
-                            <div className="text-gray-400">
-                              <span className="font-semibold text-white">{winner.votes} votes</span>
-                              {' '}•{' '}
-                              <span>{((winner.votes / totalVotes) * 100).toFixed(1)}% majority</span>
-                            </div>
+                            <p className="text-xs font-semibold text-gray-400 mb-1">
+                              DECIDED WINNER
+                            </p>
+                            <p className="text-xl font-bold text-white">
+                              {winner.text}
+                            </p>
+                            <p className="text-sm text-gray-400">
+                              <span className="text-white font-semibold">
+                                {winner.votes} votes
+                              </span>{' '}
+                              • {((winner.votes / totalVotes) * 100).toFixed(1)}%
+                            </p>
                           </div>
                         </div>
                       </div>
                     )}
 
-                    {/* Results Breakdown */}
-                    <div className="p-8">
-                      <h4 className="text-lg font-semibold text-white mb-6">Detailed Results</h4>
-                      <div className="space-y-4">
+                    {/* Results */}
+                    <div className="p-6">
+                      <h4 className="text-base font-semibold text-white mb-4">
+                        Detailed Results
+                      </h4>
+
+                      <div className="space-y-3">
                         {sortedOptions.map((option, idx) => {
-                          const percentage = totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0;
+                          const percentage = totalVotes ? (option.votes / totalVotes) * 100 : 0;
                           const isWinner = idx === 0 && totalVotes > 0;
-                          const rankColors = ['bg-yellow-500/20 text-yellow-400', 'bg-gray-600/20 text-gray-400', 'bg-orange-500/20 text-orange-400'];
 
                           return (
                             <div
                               key={option.id}
-                              className={`relative overflow-hidden rounded-xl border transition-all duration-300 ${isWinner
+                              className={`relative rounded-xl border overflow-hidden ${isWinner
                                 ? `border-primary-500/30 bg-gradient-to-r ${colorClass}/5`
                                 : 'border-gray-800/50 bg-gray-900/30'
                                 }`}
                             >
-                              {/* Background percentage bar */}
-                              <div
-                                className="absolute inset-0 transition-all duration-700 ease-out"
-                                style={{ width: `${percentage}%` }}
-                              >
-                                <div className={`absolute inset-0 ${isWinner
-                                  ? `bg-gradient-to-r ${colorClass}/10`
-                                  : 'bg-gray-700/10'
-                                  }`}></div>
-                              </div>
-
-                              <div className="relative p-4">
+                              <div className="relative p-3">
                                 <div className="flex items-center justify-between">
-                                  <div className="flex items-center space-x-4 flex-1">
-                                    {/* Rank */}
-                                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center font-bold ${idx < 3 ? rankColors[idx] : 'bg-gray-800/50 text-gray-400'
-                                      }`}>
+                                  <div className="flex items-center space-x-3 flex-1">
+                                    <div className="w-9 h-9 rounded-lg bg-gray-800/50 text-gray-300 flex items-center justify-center text-sm font-bold">
                                       #{idx + 1}
                                     </div>
 
-                                    {/* Option text */}
-                                    <div className="flex-1">
-                                      <span className="text-white font-medium">{option.text}</span>
-                                      {isWinner && (
-                                        <div className="inline-flex items-center ml-3 px-2 py-1 bg-primary-500/20 rounded-md">
-                                          <svg className="w-3 h-3 text-primary-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                          </svg>
-                                          <span className="text-xs font-semibold text-primary-400">Winner</span>
-                                        </div>
-                                      )}
-                                    </div>
+                                    <span className="text-sm text-white font-medium">
+                                      {option.text}
+                                    </span>
                                   </div>
 
-                                  {/* Votes and percentage */}
                                   <div className="text-right">
-                                    <div className="text-2xl font-bold text-white mb-1">{option.votes}</div>
-                                    <div className="text-sm font-semibold text-gray-400">{percentage.toFixed(1)}%</div>
+                                    <p className="text-lg font-bold text-white">
+                                      {option.votes}
+                                    </p>
+                                    <p className="text-xs text-gray-400">
+                                      {percentage.toFixed(1)}%
+                                    </p>
                                   </div>
                                 </div>
 
-                                {/* Percentage bar */}
-                                <div className="mt-4 h-2 bg-gray-800/50 rounded-full overflow-hidden">
+                                <div className="mt-3 h-2 bg-gray-800/50 rounded-full overflow-hidden">
                                   <div
-                                    className={`h-full rounded-full transition-all duration-1000 ease-out ${isWinner
+                                    className={`h-full rounded-full ${isWinner
                                       ? `bg-gradient-to-r ${colorClass}`
                                       : 'bg-gray-600'
                                       }`}
                                     style={{ width: `${percentage}%` }}
-                                  ></div>
+                                  />
                                 </div>
                               </div>
                             </div>
@@ -433,20 +431,17 @@ const Results = () => {
                         })}
                       </div>
 
-                      {/* View Details Button */}
-                      <div className="mt-8 pt-6 border-t border-gray-800/50">
+                      <div className="mt-6 pt-4 border-t border-gray-800/50">
                         <button
                           onClick={() => navigate(`/poll/${poll._id}`)}
-                          className="group flex items-center justify-center w-full px-6 py-3 bg-gradient-to-r from-gray-800 to-black border border-gray-700/50 rounded-xl text-white hover:border-gray-600 transition-all duration-200 font-medium"
+                          className="w-full px-5 py-2.5 bg-gradient-to-r from-gray-800 to-black border border-gray-700/50 rounded-xl text-sm font-medium text-white hover:border-gray-600 transition"
                         >
-                          <span>View Full Poll Details</span>
-                          <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                          </svg>
+                          View Full Poll Details
                         </button>
                       </div>
                     </div>
                   </div>
+
                 );
               })}
             </div>

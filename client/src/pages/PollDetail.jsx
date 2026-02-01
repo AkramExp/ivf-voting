@@ -148,7 +148,7 @@ const PollDetail = () => {
 
             {/* Poll Stats */}
             <div className="flex flex-wrap items-center gap-4 pt-6 border-t border-gray-800/50">
-              <div className="flex items-center space-x-3">
+              {/* <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 bg-gradient-to-br from-gray-800 to-black rounded-lg flex items-center justify-center border border-gray-700/50 text-white">
                   <svg className="w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -158,9 +158,9 @@ const PollDetail = () => {
                   <p className="text-xs text-gray-500">Created by</p>
                   <p className="text-white font-semibold">{poll.createdBy.username}</p>
                 </div>
-              </div>
+              </div> */}
 
-              <div className="h-8 w-px bg-gray-800/50"></div>
+              {/* <div className="h-8 w-px bg-gray-800/50"></div> */}
 
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 bg-gradient-to-br from-gray-800 to-black rounded-lg flex items-center justify-center border border-gray-700/50 text-white">
@@ -241,99 +241,101 @@ const PollDetail = () => {
             {/* Options */}
             <div className="space-y-4 mb-8">
               <h3 className="text-xl font-semibold text-white mb-4">Voting Options</h3>
-              {poll.options.map((option, index) => {
-                const percentage = totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0;
-                const isSelected = selectedOption === option.id;
-                const hasVoted = userVote === option.id;
-                const barWidth = totalVotes > 0 ? (option.votes / maxVotes) * 100 : 0;
-                const colors = [
-                  'from-blue-500 to-cyan-500',
-                  'from-purple-500 to-pink-500',
-                  'from-green-500 to-emerald-500',
-                  'from-yellow-500 to-orange-500',
-                  'from-indigo-500 to-blue-500',
-                  'from-pink-500 to-rose-500'
-                ];
-                const colorClass = colors[index % colors.length];
+              <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-white'>
+                {poll.options.map((option, index) => {
+                  const percentage = totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0;
+                  const isSelected = selectedOption === option.id;
+                  const hasVoted = userVote === option.id;
+                  const barWidth = totalVotes > 0 ? (option.votes / maxVotes) * 100 : 0;
+                  const colors = [
+                    'from-blue-500 to-cyan-500',
+                    'from-purple-500 to-pink-500',
+                    'from-green-500 to-emerald-500',
+                    'from-yellow-500 to-orange-500',
+                    'from-indigo-500 to-blue-500',
+                    'from-pink-500 to-rose-500'
+                  ];
+                  const colorClass = colors[index % colors.length];
 
-                return (
-                  <div
-                    key={option.id}
-                    onMouseEnter={() => setHoveredOption(option.id)}
-                    onMouseLeave={() => setHoveredOption(null)}
-                    onClick={() => canVote && poll.isActive && setSelectedOption(option.id)}
-                    className={`relative overflow-hidden rounded-xl border transition-all duration-300 ${canVote && poll.isActive
-                      ? 'cursor-pointer hover:scale-[1.02] hover:shadow-2xl'
-                      : 'cursor-default'
-                      } ${isSelected
-                        ? `border-primary-500/50 bg-gradient-to-r ${colorClass}/5`
-                        : 'border-gray-800/50 bg-gray-900/30'
-                      }`}
-                  >
-                    {/* Background bar */}
+                  return (
                     <div
-                      className="absolute inset-0 transition-all duration-700 ease-out"
-                      style={{ width: `${barWidth}%` }}
+                      key={option.id}
+                      onMouseEnter={() => setHoveredOption(option.id)}
+                      onMouseLeave={() => setHoveredOption(null)}
+                      onClick={() => canVote && poll.isActive && setSelectedOption(option.id)}
+                      className={`relative overflow-hidden rounded-xl border transition-all duration-300 ${canVote && poll.isActive
+                        ? 'cursor-pointer hover:scale-[1.02] hover:shadow-2xl'
+                        : 'cursor-default'
+                        } ${isSelected
+                          ? `border-primary-500/50 bg-gradient-to-r ${colorClass}/5`
+                          : 'border-gray-800/50 bg-gray-900/30'
+                        }`}
                     >
-                      <div className={`absolute inset-0 bg-gradient-to-r ${colorClass}/10`}></div>
-                    </div>
+                      {/* Background bar */}
+                      <div
+                        className="absolute inset-0 transition-all duration-700 ease-out"
+                        style={{ width: `${barWidth}%` }}
+                      >
+                        <div className={`absolute inset-0 bg-gradient-to-r ${colorClass}/10`}></div>
+                      </div>
 
-                    {/* Option content */}
-                    <div className="relative p-6">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-4 flex-1">
-                          {/* Selection indicator */}
-                          <div className="relative">
-                            <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${isSelected
-                              ? `border-primary-500 bg-gradient-to-r ${colorClass} shadow-lg shadow-primary-500/30`
-                              : 'border-gray-600 bg-gray-800/50'
-                              }`}>
-                              {isSelected && (
-                                <svg className="w-3 h-3 text-white animate-scale-in" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                </svg>
+                      {/* Option content */}
+                      <div className="relative p-6">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-4 flex-1">
+                            {/* Selection indicator */}
+                            <div className="relative">
+                              <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${isSelected
+                                ? `border-primary-500 bg-gradient-to-r ${colorClass} shadow-lg shadow-primary-500/30`
+                                : 'border-gray-600 bg-gray-800/50'
+                                }`}>
+                                {isSelected && (
+                                  <svg className="w-3 h-3 text-white animate-scale-in" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                  </svg>
+                                )}
+                              </div>
+                              {canVote && poll.isActive && (
+                                <div className={`absolute -inset-3 rounded-full transition-opacity duration-300 ${hoveredOption === option.id ? 'opacity-100' : 'opacity-0'
+                                  }`}>
+                                  <div className="absolute inset-0 bg-primary-500/20 blur-md"></div>
+                                </div>
                               )}
                             </div>
-                            {canVote && poll.isActive && (
-                              <div className={`absolute -inset-3 rounded-full transition-opacity duration-300 ${hoveredOption === option.id ? 'opacity-100' : 'opacity-0'
-                                }`}>
-                                <div className="absolute inset-0 bg-primary-500/20 blur-md"></div>
-                              </div>
-                            )}
+
+                            {/* Option text */}
+                            <div className="flex-1">
+                              <span className="text-white text-lg font-medium">{option.text}</span>
+                              {hasVoted && (
+                                <div className="inline-flex items-center ml-3 px-2 py-1 bg-primary-500/20 rounded-md">
+                                  <svg className="w-3 h-3 text-primary-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                  </svg>
+                                  <span className="text-xs font-semibold text-primary-400">Your Vote</span>
+                                </div>
+                              )}
+                            </div>
                           </div>
 
-                          {/* Option text */}
-                          <div className="flex-1">
-                            <span className="text-white text-lg font-medium">{option.text}</span>
-                            {hasVoted && (
-                              <div className="inline-flex items-center ml-3 px-2 py-1 bg-primary-500/20 rounded-md">
-                                <svg className="w-3 h-3 text-primary-400 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                </svg>
-                                <span className="text-xs font-semibold text-primary-400">Your Vote</span>
-                              </div>
-                            )}
+                          {/* Vote count and percentage */}
+                          <div className="text-right">
+                            <div className="text-2xl font-bold text-white mb-1">{option.votes}</div>
+                            <div className="text-sm font-semibold text-gray-400">{percentage.toFixed(1)}%</div>
                           </div>
                         </div>
 
-                        {/* Vote count and percentage */}
-                        <div className="text-right">
-                          <div className="text-2xl font-bold text-white mb-1">{option.votes}</div>
-                          <div className="text-sm font-semibold text-gray-400">{percentage.toFixed(1)}%</div>
+                        {/* Percentage bar */}
+                        <div className="mt-4 h-2 bg-gray-800/50 rounded-full overflow-hidden">
+                          <div
+                            className={`h-full rounded-full bg-gradient-to-r ${colorClass} transition-all duration-1000 ease-out`}
+                            style={{ width: `${percentage}%` }}
+                          ></div>
                         </div>
-                      </div>
-
-                      {/* Percentage bar */}
-                      <div className="mt-4 h-2 bg-gray-800/50 rounded-full overflow-hidden">
-                        <div
-                          className={`h-full rounded-full bg-gradient-to-r ${colorClass} transition-all duration-1000 ease-out`}
-                          style={{ width: `${percentage}%` }}
-                        ></div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
 
             {/* Vote Button */}

@@ -206,8 +206,8 @@ const Admin = () => {
         <div className="mb-8 animate-fade-in">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-4xl font-bold text-white mb-2 tracking-tight">Admin Dashboard</h1>
-              <p className="text-gray-400 text-lg">
+              <h1 className="text-2xl font-bold text-white mb-2 tracking-tight">Admin Dashboard</h1>
+              <p className="text-gray-400 text-base">
                 Manage community polls and voting activities
               </p>
             </div>
@@ -223,7 +223,7 @@ const Admin = () => {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          {/* <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <div className="backdrop-blur-xl bg-gray-900/40 rounded-xl border border-gray-800/50 p-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -285,7 +285,7 @@ const Admin = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Controls */}
           <div className="backdrop-blur-xl bg-gray-900/40 rounded-2xl border border-gray-800/50 p-6 mb-8">
@@ -384,7 +384,7 @@ const Admin = () => {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredPolls.map((poll, index) => {
               const totalVotes = poll.options.reduce((sum, opt) => sum + opt.votes, 0);
               const maxVotes = Math.max(...poll.options.map(opt => opt.votes), 1);

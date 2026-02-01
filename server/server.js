@@ -137,7 +137,7 @@ app.post('/api/auth/callback', async (req, res) => {
     });
   } catch (error) {
     console.error('Auth error:', error.response?.data || error.message);
-    res.status(500).json({ error: 'Authentication failed' });
+    res.status(401).json({ error: 'Authentication failed' });
   }
 });
 

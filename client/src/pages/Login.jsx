@@ -75,7 +75,7 @@ const Login = () => {
             <div className="flex items-center justify-between mb-2">
               <h2 className="text-2xl font-semibold text-white">Welcome back</h2>
               <div className="px-3 py-1 bg-primary-500/10 rounded-full">
-                <span className="text-xs font-medium text-primary-400">V2.0</span>
+                <span className="text-xs font-medium text-primary-400 text-white">V2.0</span>
               </div>
             </div>
             <p className="text-gray-400/80 text-sm leading-relaxed">
@@ -115,7 +115,7 @@ const Login = () => {
           </button>
 
           {/* Security info */}
-          <div className="mt-8 p-4 bg-gradient-to-br from-gray-900/60 to-black/40 rounded-xl border border-gray-800/30">
+          <div className="mt-8 p-4 bg-gradient-to-br from-gray-900/60 to-black/40 rounded-xl border border-gray-800/30 text-white">
             <div className="flex items-start space-x-4">
               <div className="flex-shrink-0 mt-0.5">
                 <div className="w-10 h-10 rounded-lg bg-primary-500/10 flex items-center justify-center">

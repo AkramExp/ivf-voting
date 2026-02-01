@@ -110,8 +110,8 @@ const Polls = () => {
         <div className="mb-8 animate-fade-in">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-4xl font-bold text-white mb-2 tracking-tight">Community Polls</h1>
-              <p className="text-gray-400 text-lg">
+              <h1 className="text-2xl font-bold text-white mb-2 tracking-tight">Community Polls</h1>
+              <p className="text-gray-400 text-base">
                 Vote on ongoing polls and shape community decisions
               </p>
             </div>
@@ -207,7 +207,7 @@ const Polls = () => {
               </div>
 
               <div className="flex items-center space-x-3">
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 flex-wrap gap-2">
                   <button
                     onClick={() => setFilter('all')}
                     className={`px-4 py-2 rounded-lg transition-all ${filter === 'all'

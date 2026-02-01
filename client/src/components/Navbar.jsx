@@ -58,8 +58,6 @@ const Navbar = () => {
     });
   }
 
-  console.log(user)
-
   return (
     <>
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
@@ -220,24 +218,14 @@ const Navbar = () => {
 
                 <div className="pt-4 mt-2 border-t border-gray-800/30">
                   <div className="flex items-center space-x-3 px-4 py-3">
-                    {user.avatar ? (
-                      <img
-                        src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`}
-                        alt={user.username}
-                        className="w-9 h-9 rounded-full ring-2 ring-gray-700/50"
-                      />
-                    ) : (
-                      <div className="w-9 h-9 bg-gradient-to-br from-gray-800 to-gray-900 rounded-full flex items-center justify-center ring-2 ring-gray-700/50">
-                        <span className="text-sm font-bold text-gray-300">
-                          {user.username.charAt(0).toUpperCase()}
-                        </span>
-                      </div>
-                    )}
+                    <div className="w-9 h-9 bg-gradient-to-br from-gray-800 to-gray-900 rounded-full flex items-center justify-center ring-2 ring-gray-700/50">
+                      <span className="text-sm font-bold text-gray-300">
+                        {user.username.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
                     <div>
                       <div className="font-medium text-gray-200">{user.username}</div>
-                      {user.isAdmin && (
-                        <div className="text-xs text-primary-300">Administrator</div>
-                      )}
+
                     </div>
                   </div>
 
