@@ -263,7 +263,7 @@ const PollDetail = () => {
             {/* Options */}
             <div className="space-y-4 mb-8">
               <h3 className="text-xl font-semibold text-white mb-4">Voting Options</h3>
-              <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 text-white'>
+              <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-white'>
                 {poll.options.map((option, index) => {
                   const percentage = totalVotes > 0 ? (option.votes / totalVotes) * 100 : 0;
                   const isSelected = selectedOption === option.id;
@@ -420,7 +420,7 @@ const PollDetail = () => {
         </div>
 
         {/* Stats Summary */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="backdrop-blur-xl bg-gray-900/40 rounded-2xl border border-gray-800/50 p-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-white">Poll Activity</h3>
@@ -484,7 +484,7 @@ const PollDetail = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {error && (
           <div className="backdrop-blur-xl bg-red-500/10 border border-red-500/20 rounded-2xl p-6 mb-8">
