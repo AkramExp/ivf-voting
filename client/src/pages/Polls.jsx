@@ -207,7 +207,7 @@ const Polls = () => {
               </div>
 
               <div className="flex items-center space-x-3">
-                <div className="flex items-center space-x-2 flex-wrap gap-2">
+                {/* <div className="flex items-center space-x-2 flex-wrap gap-2">
                   <button
                     onClick={() => setFilter('all')}
                     className={`px-4 py-2 rounded-lg transition-all ${filter === 'all'
@@ -235,7 +235,7 @@ const Polls = () => {
                   >
                     Pending
                   </button>
-                </div>
+                </div> */}
 
                 <button
                   onClick={loadPolls}
