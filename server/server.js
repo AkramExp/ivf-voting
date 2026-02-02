@@ -18,11 +18,11 @@ app.use(cors({
 app.use(express.json());
 
 // Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100
-});
-app.use('/api/', limiter);
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: 100
+// });
+// app.use('/api/', limiter);
 
 app.get("/health-check", (req, res) => {
   console.log("api is running");
